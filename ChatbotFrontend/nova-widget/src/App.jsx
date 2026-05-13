@@ -1,7 +1,7 @@
 import { useState, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { MessageCircle, X } from "lucide-react"
-
+import { AGENT_NAME ,FIRST_MESSAGE } from "./constants"
 export default function App() {
   const [open, setOpen] = useState(false)
   const dragStartPos = useRef({ x: 0, y: 0 })
@@ -70,7 +70,7 @@ export default function App() {
               justifyContent: "space-between",
             }}>
               <span style={{ color: "#C9A84C", fontWeight: 700, fontSize: "17px" }}>
-                Nova
+                {AGENT_NAME}
               </span>
               <button
                 onClick={() => setOpen(false)}
@@ -82,7 +82,7 @@ export default function App() {
 
             {/* Body */}
             <div style={{ padding: "20px", color: "#0F2D52" }}>
-              <p>👋 Hi! How can I help you today?</p>
+              <p>{FIRST_MESSAGE}</p>
             </div>
           </motion.div>
         )}
@@ -90,16 +90,6 @@ export default function App() {
 
       {/* FAB Button */}
       <motion.button
-        drag
-        dragMomentum={false}
-        dragConstraints={{
-          top: -window.innerHeight + 80,
-          left: -window.innerWidth + 80,
-          right: 0,
-          bottom: 0,
-        }}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
         onClick={handleClick}
         style={{
           position: "fixed",
@@ -111,7 +101,7 @@ export default function App() {
           borderRadius: "50%",
           background: "#0F2D52",
           border: "none",
-          cursor: "grab",
+          cursor: "pointer",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
