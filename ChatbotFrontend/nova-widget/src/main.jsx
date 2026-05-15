@@ -1,11 +1,15 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import App from "./App.jsx"
-import "./index.css"
+import cssStr from "./index.css?inline"
 
 class NovaWidget extends HTMLElement {
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" })
+
+    const style = document.createElement("style")
+    style.textContent = cssStr
+    shadow.appendChild(style)
 
     const mountPoint = document.createElement("div")
     shadow.appendChild(mountPoint)
@@ -20,7 +24,6 @@ class NovaWidget extends HTMLElement {
 
 customElements.define("nova-chatbot", NovaWidget)
 
-// Auto-inject into body
 if (!document.querySelector("nova-chatbot")) {
   const el = document.createElement("nova-chatbot")
   el.style.position = "fixed"

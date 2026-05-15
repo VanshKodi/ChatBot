@@ -2,6 +2,7 @@ import { useState, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { MessageCircle, X } from "lucide-react"
 import { AGENT_NAME ,FIRST_MESSAGE } from "./constants"
+import ChatBody from "./components/ui/chat-body"
 export default function App() {
   const [open, setOpen] = useState(false)
   const dragStartPos = useRef({ x: 0, y: 0 })
@@ -52,10 +53,14 @@ export default function App() {
             style={{
               position: "fixed",
               zIndex: 2147483646,
-              background: "white",
+              background: "rgba(255,255,255,0.85)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
               borderRadius: isMobile ? "16px 16px 0 0" : "16px",
               boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
               overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
               ...(isMobile
                 ? { bottom: 0, left: 0, right: 0, height: "80vh", width: "100%" }
                 : { bottom: "88px", right: "24px", width: "360px", height: "520px" }),
@@ -68,6 +73,7 @@ export default function App() {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
+              flexShrink: 0,
             }}>
               <span style={{ color: "#C9A84C", fontWeight: 700, fontSize: "17px" }}>
                 {AGENT_NAME}
@@ -81,8 +87,8 @@ export default function App() {
             </div>
 
             {/* Body */}
-            <div style={{ padding: "20px", color: "#0F2D52" }}>
-              <p>{FIRST_MESSAGE}</p>
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+              <ChatBody />              
             </div>
           </motion.div>
         )}
