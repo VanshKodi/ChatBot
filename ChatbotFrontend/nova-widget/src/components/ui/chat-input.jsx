@@ -8,7 +8,7 @@ export function ChatInput() {
       }}
     >
       <PromptInputBody>
-        <PromptInputTextarea />
+        <PromptInputTextarea  />
       </PromptInputBody>
       <PromptInputFooter>
         <PromptInputTools />

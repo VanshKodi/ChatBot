@@ -1,30 +1,32 @@
-import { useState, useRef } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { MessageCircle, X } from "lucide-react"
-import { AGENT_NAME ,FIRST_MESSAGE } from "./constants"
+import { AGENT_NAME } from "./constants"
 import ChatBody from "./components/ui/chat-body"
+
 export default function App() {
   const [open, setOpen] = useState(false)
-  const dragStartPos = useRef({ x: 0, y: 0 })
-  const isDragging = useRef(false)
 
-  function handleDragStart(e) {
-    dragStartPos.current = { x: e.clientX, y: e.clientY }
-    isDragging.current = false
+  useEffect(() => {
+    const stored = localStorage.getItem('ischatOpen')
+    if (stored === null) {
+      localStorage.setItem('ischatOpen', 'false')
+    } else {
+      setOpen(JSON.parse(stored))
+    }
+  }, [])
+
+  function handleToggle() {
+    setOpen((prev) => {
+      const next = !prev
+      localStorage.setItem('ischatOpen', JSON.stringify(next))
+      return next
+    })
   }
 
-  function handleDragEnd(e) {
-    const dx = Math.abs(e.clientX - dragStartPos.current.x)
-    const dy = Math.abs(e.clientY - dragStartPos.current.y)
-    if (dx > 5 || dy > 5) {
-      isDragging.current = true
-    }
-  }
-
-  function handleClick() {
-    if (!isDragging.current) {
-      setOpen(prev => !prev)
-    }
+  function handleClose() {
+    setOpen(false)
+    localStorage.setItem('ischatOpen', 'false')
   }
 
   const isMobile = window.innerWidth < 768
@@ -53,7 +55,7 @@ export default function App() {
             style={{
               position: "fixed",
               zIndex: 2147483646,
-              background: "rgba(255,255,255,0.85)",
+              background: "rgba(255,255,255,0.55)",
               backdropFilter: "blur(12px)",
               WebkitBackdropFilter: "blur(12px)",
               borderRadius: isMobile ? "16px 16px 0 0" : "16px",
@@ -79,7 +81,7 @@ export default function App() {
                 {AGENT_NAME}
               </span>
               <button
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
                 style={{ background: "none", border: "none", cursor: "pointer", color: "white" }}
               >
                 <X size={20} />
@@ -96,7 +98,7 @@ export default function App() {
 
       {/* FAB Button */}
       <motion.button
-        onClick={handleClick}
+        onClick={handleToggle}
         style={{
           position: "fixed",
           bottom: "24px",
